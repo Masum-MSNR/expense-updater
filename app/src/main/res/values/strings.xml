@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">Expense Updater</string>
+    <string name="connect_to_google">Connect with your google account to continue.</string>
+    <string name="connected_to_google">You are connect with google.</string>
+    <string name="disconnect">Disconnect</string>
+    <string name="_continue">Continue</string>
+    <string name="connect_with_a_spreadsheet_first">Connect with a spreadsheet first</string>
+    <string name="sheet_id">Sheet Id</string>
+    <string name="you_are_connected_with">You are connected with</string>
+    <string name="d_connect_to_google">Please connect with a google account. Make sure that you have permission to access a valid spreadsheets.</string>
+    <string name="connect">Connect</string>
+    <string name="d_connect_to_spread_sheet">If you are connected with google successfully then connect a valid spreadsheet with permission to write on it.</string>
+    <string name="d_connected_to_sheet">Connected to Sheet</string>
+    <string name="d_connected_to_google">Connected to Google</string>
+    <string name="spreadsheet_id">Spreadsheet ID</string>
+    <string name="d_permission">To continue you need to give permission to read your all upcoming message of your phone.</string>
+    <string name="give_permission">Give Permission</string>
+    <string name="d_all_set">You are all set. You can update your sheet from here.</string>
+    <string name="change_sheet">Change Sheet</string>
+    <string name="refresh">Refresh</string>
+</resources>
