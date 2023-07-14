@@ -1,28 +1,29 @@
 package com.msnr.expense_updater.activities;
 
-import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
+import com.google.api.services.sheets.v4.Sheets;
+import com.google.api.services.sheets.v4.SheetsScopes;
 import com.msnr.expense_updater.R;
 import com.msnr.expense_updater.adapters.SheetTitleAdapter;
 import com.msnr.expense_updater.databinding.ActivitySettingsBinding;
+import com.msnr.expense_updater.serviceHelpers.BGSheetsServiceHelper;
 import com.msnr.expense_updater.viewModels.HomeActivityVm;
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
-import com.google.api.services.sheets.v4.SheetsScopes;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -187,6 +188,12 @@ public class SettingsActivity extends AppCompatActivity implements SheetTitleAda
         binding.disconnectBt.setOnClickListener(v -> {
             viewModel.clearSpreadSheetDetails();
             viewModel.state.setValue(2);
+        });
+
+        binding.hehe.setOnClickListener(v -> {
+            viewModel.loadSheet().addOnSuccessListener(result -> {
+                Log.d("TAG", "start: " + result);
+            });
         });
     }
 

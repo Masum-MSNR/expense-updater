@@ -17,7 +17,7 @@
         android:background="@drawable/bg_toolbar"
         android:elevation="2dp"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        app:title="Home" />
+        app:title="Settings" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -333,7 +333,7 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/spreadsheet_id"
                     android:inputType="text"
-                    android:text="17AxLXG-gsjldK_Zzy2zzNacyIzP2hPRdaiCmWaf6-3U" />
+                    android:text="" />
             </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -375,6 +375,12 @@
 
 
             </LinearLayout>
+
+            <Button
+                android:id="@+id/hehe"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="hehe" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

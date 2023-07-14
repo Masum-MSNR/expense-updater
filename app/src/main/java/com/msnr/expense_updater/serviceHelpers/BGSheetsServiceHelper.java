@@ -7,6 +7,8 @@ import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Looper;
 
+import com.google.api.services.sheets.v4.model.Sheet;
+import com.google.api.services.sheets.v4.model.Spreadsheet;
 import com.msnr.expense_updater.R;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.tasks.Task;
@@ -22,6 +24,7 @@ import com.google.api.services.sheets.v4.model.ValueRange;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;

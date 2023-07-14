@@ -6,8 +6,10 @@ import static com.msnr.expense_updater.utils.C.PREFS_NAME;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -28,17 +30,21 @@ import com.google.api.services.sheets.v4.Sheets;
 import com.google.api.services.sheets.v4.SheetsScopes;
 import com.google.api.services.sheets.v4.model.Sheet;
 import com.google.api.services.sheets.v4.model.Spreadsheet;
+import com.google.api.services.sheets.v4.model.ValueRange;
+import com.google.common.collect.Table;
 import com.msnr.expense_updater.R;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class HomeActivityVm extends ViewModel {
 
@@ -60,35 +66,27 @@ public class HomeActivityVm extends ViewModel {
 
 
     public GoogleSignInClient getGoogleSignInOption(Context context) {
-        GoogleSignInOptions signInOptions =
-                new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                        .requestScopes(new Scope(SheetsScopes.SPREADSHEETS))
-                        .requestEmail()
-                        .build();
+        GoogleSignInOptions signInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestScopes(new Scope(SheetsScopes.SPREADSHEETS)).requestEmail().build();
         return GoogleSignIn.getClient(context, signInOptions);
     }
 
 
     public void handleSignInResult(Intent result, Context context) {
-        GoogleSignIn.getSignedInAccountFromIntent(result)
-                .addOnSuccessListener(googleAccount -> {
-                    GoogleAccountCredential credential = GoogleAccountCredential.usingOAuth2(context, Collections.singleton(SheetsScopes.SPREADSHEETS));
-                    credential.setSelectedAccount(googleAccount.getAccount());
-                    state.setValue(2);
-                    initiateSheetService(credential, context);
-                })
-                .addOnFailureListener(exception -> {
-                    state.setValue(1);
-                });
+        GoogleSignIn.getSignedInAccountFromIntent(result).addOnSuccessListener(googleAccount -> {
+            GoogleAccountCredential credential = GoogleAccountCredential.usingOAuth2(context, Collections.singleton(SheetsScopes.SPREADSHEETS));
+            credential.setSelectedAccount(googleAccount.getAccount());
+            state.setValue(2);
+            initiateSheetService(credential, context);
+        }).addOnFailureListener(exception -> {
+            state.setValue(1);
+        });
     }
 
     public void initiateSheetService(GoogleAccountCredential credential, Context context) {
         try {
             JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
             NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
-            sheetService = new Sheets.Builder(HTTP_TRANSPORT, JSON_FACTORY, credential)
-                    .setApplicationName(context.getString(R.string.app_name))
-                    .build();
+            sheetService = new Sheets.Builder(HTTP_TRANSPORT, JSON_FACTORY, credential).setApplicationName(context.getString(R.string.app_name)).build();
         } catch (GeneralSecurityException | IOException ignored) {
         }
     }
@@ -116,6 +114,40 @@ public class HomeActivityVm extends ViewModel {
             }
             new Handler(Looper.getMainLooper()).post(() -> {
                 saveSpreadSheetDetails();
+                tcs.setResult(result.get());
+            });
+        });
+        return tcs.getTask();
+    }
+
+    public Task<Integer> loadSheet() {
+        TaskCompletionSource<Integer> tcs = new TaskCompletionSource<>();
+        ExecutorService service = Executors.newFixedThreadPool(1);
+        AtomicInteger result = new AtomicInteger(-1);
+        service.execute(() -> {
+            try {
+                ValueRange response = this.sheetService.spreadsheets().values()
+                        .get(spreadSheetId, currentSheetTitle + "!A8:A")
+                        .execute();
+                List<List<Object>> values = response.getValues();
+                int lastNotEmptyRowIndex = 0;
+                if (values != null) {
+                    for (int i = 0; i < values.size(); i++) {
+                        List<Object> row = values.get(i);
+                        for (Object cell : row) {
+                            if (!cell.toString().equals("")) {
+                                lastNotEmptyRowIndex = i;
+                            }
+                        }
+                    }
+                    result.set(lastNotEmptyRowIndex + 9);
+                } else {
+                    result.set(8);
+                }
+            } catch (IOException e) {
+                result.set(-1);
+            }
+            new Handler(Looper.getMainLooper()).post(() -> {
                 tcs.setResult(result.get());
             });
         });
