@@ -6,6 +6,8 @@ import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.text.Html;
+import android.text.Spanned;
 import android.util.Log;
 
 import com.msnr.expense_updater.receiver.TaskReceiver;
@@ -15,7 +17,7 @@ public class Methods {
     public static void setAlarm(Context context) {
         Log.v("Methods", "setAlarm");
         long currentTime = System.currentTimeMillis();
-        currentTime += 10000;
+        currentTime += 60000;
 
         Intent intent = new Intent(context, TaskReceiver.class);
         PendingIntent pi;
@@ -42,6 +44,7 @@ public class Methods {
     }
 
     public static void updateWidget(Context context) {
+        setAlarm(context);
         Log.v("Methods", "updateWidget");
         Intent intent = new Intent(context, DashboardWidget.class);
         intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
@@ -49,5 +52,15 @@ public class Methods {
                 .getAppWidgetIds(new ComponentName(context, DashboardWidget.class));
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
         context.sendBroadcast(intent);
+    }
+
+    public static Spanned getHtml(Object object) {
+        String temp = object.toString().trim();
+        temp = temp.substring(0, temp.length() - 1);
+        if (temp.contains("-")) {
+            return Html.fromHtml("<font color='#FFA1A1'>" + temp.substring(1) + "</font>");
+        } else {
+            return Html.fromHtml("<font color='#000000'>" + temp + "</font>");
+        }
     }
 }

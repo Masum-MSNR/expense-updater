@@ -3,15 +3,12 @@ package com.msnr.expense_updater.widgets;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.widget.RemoteViews;
 
-import com.google.api.services.sheets.v4.model.Sheet;
 import com.msnr.expense_updater.R;
-import com.msnr.expense_updater.databinding.DashboardWidgetBinding;
 import com.msnr.expense_updater.serviceHelpers.SheetHelper;
+import com.msnr.expense_updater.utils.Methods;
 
 import java.util.List;
 
@@ -24,6 +21,7 @@ public class DashboardWidget extends AppWidgetProvider {
         SheetHelper sheetHelper = new SheetHelper(context);
         sheetHelper.getSpecificRange("E1:H6", new int[]{0, 3, 5}).addOnSuccessListener(result -> {
 
+            if(result==null) return;
             //update name
             List<Object> list = result.get(0);
             views.setTextViewText(R.id.tv_name1, list.get(0).toString());
@@ -33,17 +31,17 @@ public class DashboardWidget extends AppWidgetProvider {
 
             //cost amount
             list = result.get(2);
-            views.setTextViewText(R.id.tv_spent1, list.get(0).toString());
-            views.setTextViewText(R.id.tv_spent2, list.get(1).toString());
-            views.setTextViewText(R.id.tv_spent3, list.get(2).toString());
-            views.setTextViewText(R.id.tv_spent4, list.get(3).toString());
+            views.setTextViewText(R.id.tv_spent1, Methods.getHtml(list.get(0)));
+            views.setTextViewText(R.id.tv_spent2, Methods.getHtml(list.get(1)));
+            views.setTextViewText(R.id.tv_spent3, Methods.getHtml(list.get(2)));
+            views.setTextViewText(R.id.tv_spent4, Methods.getHtml(list.get(3)));
 
             //balance amount
             list = result.get(1);
-            views.setTextViewText(R.id.tv_balance1, list.get(0).toString());
-            views.setTextViewText(R.id.tv_balance2, list.get(1).toString());
-            views.setTextViewText(R.id.tv_balance3, list.get(2).toString());
-            views.setTextViewText(R.id.tv_balance4, list.get(3).toString());
+            views.setTextViewText(R.id.tv_balance1, Methods.getHtml(list.get(0)));
+            views.setTextViewText(R.id.tv_balance2, Methods.getHtml(list.get(1)));
+            views.setTextViewText(R.id.tv_balance3, Methods.getHtml(list.get(2)));
+            views.setTextViewText(R.id.tv_balance4, Methods.getHtml(list.get(3)));
 
             appWidgetManager.updateAppWidget(appWidgetId, views);
         });

@@ -9,9 +9,6 @@ import android.os.Looper;
 
 import androidx.lifecycle.MutableLiveData;
 
-import com.google.api.services.sheets.v4.model.Sheet;
-import com.google.api.services.sheets.v4.model.Spreadsheet;
-import com.msnr.expense_updater.R;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.TaskCompletionSource;
@@ -22,7 +19,10 @@ import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.services.sheets.v4.Sheets;
 import com.google.api.services.sheets.v4.SheetsScopes;
+import com.google.api.services.sheets.v4.model.Sheet;
+import com.google.api.services.sheets.v4.model.Spreadsheet;
 import com.google.api.services.sheets.v4.model.ValueRange;
+import com.msnr.expense_updater.R;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
@@ -74,6 +74,7 @@ public class SheetHelper {
                 sheetTitles.postValue(tempTitles);
                 result.set(true);
             } catch (IOException e) {
+                e.printStackTrace();
                 result.set(false);
             }
             new Handler(Looper.getMainLooper()).post(() -> {
@@ -166,6 +167,7 @@ public class SheetHelper {
                 sheetTitles.postValue(tempTitles);
                 result.set(true);
             } catch (IOException e) {
+                e.printStackTrace();
                 result.set(false);
             }
             new Handler(Looper.getMainLooper()).post(() -> {

@@ -2,12 +2,13 @@ package com.msnr.expense_updater;
 
 import android.app.Application;
 
+import com.msnr.expense_updater.utils.Methods;
+
 public class App extends Application {
 
-    private static final String TAG = "App";
-    
     @Override
     public void onCreate() {
         super.onCreate();
+        Methods.updateWidget(getApplicationContext());
     }
 }
