@@ -1,9 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <style name="button_style">
         <item name="android:minHeight">0dp</item>
         <item name="android:background">@drawable/ripple_button</item>
         <item name="backgroundTint">@color/white</item>
         <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="Widget.ExpenseUpdater.AppWidget.Container" parent="android:Widget">
+        <item name="android:id">@android:id/background</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <style name="Widget.ExpenseUpdater.AppWidget.InnerView" parent="android:Widget">
+        <item name="android:background">?android:attr/colorBackground</item>
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
     </style>
 </resources>

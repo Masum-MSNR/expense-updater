@@ -1,45 +1,38 @@
 package com.msnr.expense_updater.activities;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
-import com.google.api.services.sheets.v4.Sheets;
-import com.google.api.services.sheets.v4.SheetsScopes;
 import com.msnr.expense_updater.R;
 import com.msnr.expense_updater.adapters.SheetTitleAdapter;
 import com.msnr.expense_updater.databinding.ActivitySettingsBinding;
-import com.msnr.expense_updater.serviceHelpers.BGSheetsServiceHelper;
-import com.msnr.expense_updater.viewModels.HomeActivityVm;
+import com.msnr.expense_updater.utils.Methods;
+import com.msnr.expense_updater.viewModels.SettingsActivityVm;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Objects;
 
 public class SettingsActivity extends AppCompatActivity implements SheetTitleAdapter.OnClick {
 
-    ActivitySettingsBinding binding;
-    HomeActivityVm viewModel;
-    ActivityResultLauncher<Intent> launcher;
-    SheetTitleAdapter adapter;
-    ArrayList<String> sheetTitles;
-    String selectedTitle;
-    long timer = 10000;
-    Handler handler;
-    Runnable runnable = () -> {
+    private ActivitySettingsBinding binding;
+    private SettingsActivityVm viewModel;
+    private ActivityResultLauncher<Intent> launcher;
+    private SheetTitleAdapter adapter;
+    private ArrayList<String> sheetTitles;
+    private final long timer = 10000;
+    private Handler handler;
+    private final Runnable runnable = () -> {
         binding.sheetTitleRv.setVisibility(View.GONE);
         binding.changeSheetBt.setText(R.string.change_sheet);
     };
@@ -79,16 +72,18 @@ public class SettingsActivity extends AppCompatActivity implements SheetTitleAda
                 binding.spreadSheetIdIl.setVisibility(View.GONE);
                 binding.connectedToGoogleLl.setVisibility(View.VISIBLE);
                 binding.connectedToSpreadSheetLl.setVisibility(View.VISIBLE);
-                String d4 = "Connected to " + viewModel.spreadSheetTitle + " [" + viewModel.currentSheetTitle + "]";
+                String d4 = "Connected to " + viewModel.sheetHelper.getSpreadSheetTitle() + " [" + viewModel.sheetHelper.getCurrentSheetTitle() + "]";
                 binding.dt4.setText(d4);
                 binding.detailsLl.setVisibility(View.VISIBLE);
                 break;
         }
     };
 
+    @SuppressLint("NotifyDataSetChanged")
     private final Observer<ArrayList<String>> titlesObserver = list -> {
         sheetTitles.clear();
         sheetTitles.addAll(list);
+        adapter.setSelectedTitle(viewModel.sheetHelper.getCurrentSheetTitle());
         adapter.notifyDataSetChanged();
     };
 
@@ -97,17 +92,14 @@ public class SettingsActivity extends AppCompatActivity implements SheetTitleAda
         super.onCreate(savedInstanceState);
         binding = ActivitySettingsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        handler = new Handler();
-        viewModel = new ViewModelProvider(this).get(HomeActivityVm.class);
-        viewModel.init(this);
-        viewModel.state.setValue(0);
-        sheetTitles = new ArrayList<>(viewModel.sheetTitles.getValue());
-        selectedTitle = viewModel.currentSheetTitle;
 
-        adapter = new SheetTitleAdapter(sheetTitles, viewModel.currentSheetTitle, this);
+        handler = new Handler();
+        viewModel = new ViewModelProvider(this).get(SettingsActivityVm.class);
+        sheetTitles = new ArrayList<>(Objects.requireNonNull(viewModel.sheetTitles.getValue()));
+        adapter = new SheetTitleAdapter(sheetTitles, viewModel.sheetHelper.getCurrentSheetTitle(), this);
         binding.sheetTitleRv.setLayoutManager(new GridLayoutManager(this, 2));
         binding.sheetTitleRv.setAdapter(adapter);
-        launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> viewModel.handleSignInResult(result.getData(), this));
+        launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> viewModel.handleSignInResult(result.getData()));
 
         //observer
         viewModel.state.observe(this, stateObserver);
@@ -117,26 +109,12 @@ public class SettingsActivity extends AppCompatActivity implements SheetTitleAda
 
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == 100) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED)
-                start();
-        }
-    }
-
     private void start() {
         viewModel.state.setValue(1);
 
         if (GoogleSignIn.getLastSignedInAccount(this) != null) {
-            GoogleAccountCredential credential =
-                    GoogleAccountCredential.usingOAuth2(
-                            this, Collections.singleton(SheetsScopes.SPREADSHEETS));
-            credential.setSelectedAccount(Objects.requireNonNull(GoogleSignIn.getLastSignedInAccount(this)).getAccount());
-            viewModel.initiateSheetService(credential, this);
             viewModel.state.setValue(2);
-            if (!viewModel.spreadSheetId.equals("")) {
+            if (!viewModel.sheetHelper.getSpreadSheetId().equals("")) {
                 viewModel.state.setValue(3);
             }
         }
@@ -151,9 +129,7 @@ public class SettingsActivity extends AppCompatActivity implements SheetTitleAda
                 binding.spreadSheetIdEt.setError("Please enter a spreadsheet id!");
                 return;
             }
-            viewModel.loadSpreadSheet(binding.spreadSheetIdEt.getText().toString()).addOnSuccessListener(result -> {
-                adapter.setSelectedTitle(viewModel.currentSheetTitle);
-            });
+            viewModel.connectSheet(binding.spreadSheetIdEt.getText().toString());
         });
 
         binding.changeSheetBt.setOnClickListener(v -> {
@@ -163,11 +139,11 @@ public class SettingsActivity extends AppCompatActivity implements SheetTitleAda
                 handler.postDelayed(runnable, timer);
                 binding.changeSheetBt.setEnabled(false);
                 binding.changeSheetBt.setText("---");
-                viewModel.refreshSheetTitles().addOnSuccessListener(result -> {
+                viewModel.sheetHelper.refreshSheetTitles().addOnSuccessListener(result -> {
                     handler.removeCallbacks(runnable);
                     handler = new Handler();
                     handler.postDelayed(runnable, timer);
-                    viewModel.loadSheetDetails();
+                    viewModel.sheetHelper.loadSheetDetails();
                     binding.changeSheetBt.setEnabled(true);
                     binding.changeSheetBt.setText(R.string.refresh);
                 }).addOnFailureListener(e -> {
@@ -186,26 +162,27 @@ public class SettingsActivity extends AppCompatActivity implements SheetTitleAda
         });
 
         binding.disconnectBt.setOnClickListener(v -> {
-            viewModel.clearSpreadSheetDetails();
-            viewModel.state.setValue(2);
+            viewModel.disconnectSheet();
         });
 
-        binding.hehe.setOnClickListener(v -> {
-            viewModel.loadSheet().addOnSuccessListener(result -> {
-                Log.d("TAG", "start: " + result);
-            });
-        });
+//        viewModel.getSpecificRange("E1:H6", new int[]{0, 3, 5}).addOnSuccessListener(result -> {
+//            for (List<Object> list : result) {
+//                Log.d("TAG", "start: " + list.toString());
+//            }
+//        });
     }
 
 
     @Override
     public void onClick(String title) {
-        viewModel.updateCurrentSheetTitle(title);
+        Methods.cancelAlarm(this);
+        viewModel.sheetHelper.updateCurrentSheetTitle(title);
         adapter.setSelectedTitle(title);
-        String d4 = "Connected to " + viewModel.spreadSheetTitle + " [" + viewModel.currentSheetTitle + "]";
+        String d4 = "Connected to " + viewModel.sheetHelper.getSpreadSheetTitle() + " [" + viewModel.sheetHelper.getCurrentSheetTitle() + "]";
         binding.dt4.setText(d4);
         binding.sheetTitleRv.setVisibility(binding.sheetTitleRv.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
         handler.removeCallbacks(runnable);
         binding.changeSheetBt.setText(R.string.change_sheet);
+        Methods.setAlarm(this);
     }
 }
