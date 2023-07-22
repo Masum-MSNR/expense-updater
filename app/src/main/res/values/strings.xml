@@ -22,4 +22,7 @@
     <string name="add_widget">Add widget</string>
     <string name="app_widget_description">This is an app widget description</string>
     <string name="placeholder">--- ---</string>
+    <string name="date">Date</string>
+    <string name="item_description">Item Description</string>
+    <string name="enter_expense">Enter Expense</string>
 </resources>
