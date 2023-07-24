@@ -17,6 +17,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.msnr.expense_updater.R;
 import com.msnr.expense_updater.adapters.SheetTitleAdapter;
 import com.msnr.expense_updater.databinding.ActivitySettingsBinding;
+import com.msnr.expense_updater.dialogs.EnterExpenseDialog;
 import com.msnr.expense_updater.utils.Methods;
 import com.msnr.expense_updater.viewModels.SettingsActivityVm;
 
@@ -165,11 +166,10 @@ public class SettingsActivity extends AppCompatActivity implements SheetTitleAda
             viewModel.disconnectSheet();
         });
 
-//        viewModel.getSpecificRange("E1:H6", new int[]{0, 3, 5}).addOnSuccessListener(result -> {
-//            for (List<Object> list : result) {
-//                Log.d("TAG", "start: " + list.toString());
-//            }
-//        });
+        binding.btnAddExpense.setOnClickListener(v -> {
+            EnterExpenseDialog dialog = new EnterExpenseDialog();
+            dialog.show(getSupportFragmentManager(), "Enter Expense");
+        });
     }
 
 
