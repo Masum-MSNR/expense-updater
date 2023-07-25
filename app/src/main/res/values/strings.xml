@@ -26,4 +26,14 @@
     <string name="item_description">Item Description</string>
     <string name="enter_expense">Enter Expense</string>
     <string name="add_expense">Add Expense</string>
+
+
+    <string-array name="categories">
+        <item>Home Food</item>
+        <item>Household</item>
+        <item>Restaurant</item>
+        <item>Transport</item>
+        <item>Frndly Ln</item>  <!--sakib vai er jonno-->
+        <item>Others</item>
+    </string-array>
 </resources>

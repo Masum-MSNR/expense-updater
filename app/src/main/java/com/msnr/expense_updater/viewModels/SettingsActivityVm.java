@@ -15,10 +15,13 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.Scope;
 import com.google.api.services.sheets.v4.SheetsScopes;
+import com.msnr.expense_updater.activities.SettingsActivity;
 import com.msnr.expense_updater.serviceHelpers.SheetHelper;
 import com.msnr.expense_updater.utils.Methods;
+import com.msnr.expense_updater.utils.Preference;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class SettingsActivityVm extends AndroidViewModel {
 
@@ -66,6 +69,10 @@ public class SettingsActivityVm extends AndroidViewModel {
             if (aBoolean) {
                 state.setValue(3);
                 Methods.setAlarm(getApplication().getApplicationContext());
+                //load necessary data
+                sheetHelper.getSpecificRange("E1:H1", new int[]{0}).addOnSuccessListener(result -> {
+                    Preference.setNames(result.get(0), getApplication().getApplicationContext());
+                });
             }
         });
     }
