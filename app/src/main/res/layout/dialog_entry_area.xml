@@ -47,140 +47,233 @@
                         android:id="@+id/et_date"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="5dp"
                         android:layout_weight="4"
+                        android:background="@drawable/rounded_bg"
                         android:clickable="false"
                         android:cursorVisible="false"
                         android:focusable="false"
                         android:focusableInTouchMode="false"
                         android:hint="@string/date"
-                        android:inputType="date" />
+                        android:inputType="date"
+                        android:paddingHorizontal="10dp"
+                        android:paddingVertical="5dp"
+                        android:textSize="16sp" />
 
                     <Spinner
                         android:id="@+id/sp_category"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="6" />
+                        android:layout_marginStart="5dp"
+                        android:layout_weight="6"
+                        android:background="@drawable/rounded_bg"
+                        android:paddingHorizontal="10dp"
+                        android:paddingVertical="5dp" />
                 </LinearLayout>
 
                 <EditText
                     android:id="@+id/et_item_description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/item_description" />
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/rounded_bg"
+                    android:hint="@string/item_description"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="5dp"
+                    android:textSize="16sp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     android:orientation="horizontal"
-                    android:weightSum="8">
+                    android:weightSum="10">
 
                     <EditText
                         android:id="@+id/et_paid_1"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="2" />
+                        android:layout_marginEnd="5dp"
+                        android:layout_weight="5"
+                        android:background="@drawable/rounded_bg"
+                        android:paddingHorizontal="10dp"
+                        android:paddingVertical="5dp"
+                        android:textSize="16sp" />
 
-                    <EditText
-                        android:id="@+id/et_paid_2"
+                    <RelativeLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="2" />
-
-                    <EditText
-                        android:id="@+id/et_paid_3"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="2" />
-
-                    <EditText
-                        android:id="@+id/et_paid_4"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="2" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="8">
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="2"
+                        android:layout_weight="5"
                         android:orientation="horizontal">
+
+
+                        <EditText
+                            android:id="@+id/et_share_1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:layout_toStartOf="@id/cb_share_1"
+                            android:background="@drawable/rounded_bg"
+                            android:hint="@string/share"
+                            android:paddingHorizontal="10dp"
+                            android:paddingVertical="5dp"
+                            android:textSize="16sp" />
+
 
                         <CheckBox
                             android:id="@+id/cb_share_1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
                             android:minWidth="10dp"
                             android:minHeight="10dp" />
+                    </RelativeLayout>
+                </LinearLayout>
 
-                        <EditText
-                            android:id="@+id/et_share_1"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
-                    </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal"
+                    android:weightSum="10">
 
-                    <LinearLayout
+                    <EditText
+                        android:id="@+id/et_paid_2"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="2"
+                        android:layout_marginEnd="5dp"
+                        android:layout_weight="5"
+                        android:background="@drawable/rounded_bg"
+                        android:paddingHorizontal="10dp"
+                        android:paddingVertical="5dp"
+                        android:textSize="16sp" />
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="5"
                         android:orientation="horizontal">
+
+
+                        <EditText
+                            android:id="@+id/et_share_2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:layout_toStartOf="@id/cb_share_2"
+                            android:background="@drawable/rounded_bg"
+                            android:hint="@string/share"
+                            android:paddingHorizontal="10dp"
+                            android:paddingVertical="5dp"
+                            android:textSize="16sp" />
+
 
                         <CheckBox
                             android:id="@+id/cb_share_2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
                             android:minWidth="10dp"
                             android:minHeight="10dp" />
+                    </RelativeLayout>
+                </LinearLayout>
 
-                        <EditText
-                            android:id="@+id/et_share_2"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
-                    </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal"
+                    android:weightSum="10">
 
-                    <LinearLayout
+                    <EditText
+                        android:id="@+id/et_paid_3"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="2"
+                        android:layout_marginEnd="5dp"
+                        android:layout_weight="5"
+                        android:background="@drawable/rounded_bg"
+                        android:paddingHorizontal="10dp"
+                        android:paddingVertical="5dp"
+                        android:textSize="16sp" />
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="5"
                         android:orientation="horizontal">
+
+
+                        <EditText
+                            android:id="@+id/et_share_3"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:layout_toStartOf="@id/cb_share_3"
+                            android:background="@drawable/rounded_bg"
+                            android:hint="@string/share"
+                            android:paddingHorizontal="10dp"
+                            android:paddingVertical="5dp"
+                            android:textSize="16sp" />
+
 
                         <CheckBox
                             android:id="@+id/cb_share_3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
                             android:minWidth="10dp"
                             android:minHeight="10dp" />
+                    </RelativeLayout>
+                </LinearLayout>
 
-                        <EditText
-                            android:id="@+id/et_share_3"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
-                    </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal"
+                    android:weightSum="10">
 
-                    <LinearLayout
+                    <EditText
+                        android:id="@+id/et_paid_4"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="2"
+                        android:layout_marginEnd="5dp"
+                        android:layout_weight="5"
+                        android:background="@drawable/rounded_bg"
+                        android:paddingHorizontal="10dp"
+                        android:paddingVertical="5dp"
+                        android:textSize="16sp" />
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="5"
                         android:orientation="horizontal">
+
+
+                        <EditText
+                            android:id="@+id/et_share_4"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:layout_toStartOf="@id/cb_share_4"
+                            android:background="@drawable/rounded_bg"
+                            android:hint="@string/share"
+                            android:paddingHorizontal="10dp"
+                            android:paddingVertical="5dp"
+                            android:textSize="16sp" />
+
 
                         <CheckBox
                             android:id="@+id/cb_share_4"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
                             android:minWidth="10dp"
                             android:minHeight="10dp" />
-
-                        <EditText
-                            android:id="@+id/et_share_4"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
-                    </LinearLayout>
+                    </RelativeLayout>
                 </LinearLayout>
+
             </LinearLayout>
         </LinearLayout>
 

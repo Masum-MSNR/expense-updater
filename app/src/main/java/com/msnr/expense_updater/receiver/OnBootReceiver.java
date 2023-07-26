@@ -12,3 +12,4 @@ public class OnBootReceiver extends BroadcastReceiver {
         Methods.updateWidget(context);
     }
 }
+
