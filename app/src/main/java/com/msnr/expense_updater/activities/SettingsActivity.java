@@ -14,14 +14,20 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.api.services.sheets.v4.model.CellData;
+import com.google.api.services.sheets.v4.model.ExtendedValue;
+import com.google.api.services.sheets.v4.model.ValueRange;
 import com.msnr.expense_updater.R;
 import com.msnr.expense_updater.adapters.SheetTitleAdapter;
 import com.msnr.expense_updater.databinding.ActivitySettingsBinding;
 import com.msnr.expense_updater.dialogs.EnterExpenseDialog;
+import com.msnr.expense_updater.helpers.SheetHelper;
 import com.msnr.expense_updater.utils.Methods;
 import com.msnr.expense_updater.viewModels.SettingsActivityVm;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Objects;
 
 public class SettingsActivity extends AppCompatActivity implements SheetTitleAdapter.OnClick {
@@ -170,6 +176,14 @@ public class SettingsActivity extends AppCompatActivity implements SheetTitleAda
             EnterExpenseDialog dialog = new EnterExpenseDialog();
             dialog.show(getSupportFragmentManager(), "Enter Expense");
         });
+    }
+
+    private CellData getCellDataWithFormula(String formula) {
+        CellData cellData = new CellData();
+        ExtendedValue extendedValue = new ExtendedValue();
+        extendedValue.setFormulaValue(formula);
+        cellData.setUserEnteredValue(extendedValue);
+        return cellData;
     }
 
 

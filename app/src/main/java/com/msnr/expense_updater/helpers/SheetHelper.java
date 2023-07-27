@@ -1,4 +1,4 @@
-package com.msnr.expense_updater.serviceHelpers;
+package com.msnr.expense_updater.helpers;
 
 import static com.msnr.expense_updater.utils.Consts.PREFS_NAME;
 
@@ -19,14 +19,20 @@ import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.services.sheets.v4.Sheets;
 import com.google.api.services.sheets.v4.SheetsScopes;
+
+import com.google.api.services.sheets.v4.model.GridCoordinate;
+import com.google.api.services.sheets.v4.model.Request;
+import com.google.api.services.sheets.v4.model.RowData;
 import com.google.api.services.sheets.v4.model.Sheet;
 import com.google.api.services.sheets.v4.model.Spreadsheet;
+import com.google.api.services.sheets.v4.model.UpdateCellsRequest;
 import com.google.api.services.sheets.v4.model.ValueRange;
 import com.msnr.expense_updater.R;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -196,23 +202,24 @@ public class SheetHelper {
         return tcs.getTask();
     }
 
-    //    public Task<Boolean> updateSpecificRow(ValueRange valueRange) {
-//        TaskCompletionSource<Boolean> tcs = new TaskCompletionSource<>();
-//        ExecutorService service = Executors.newFixedThreadPool(1);
-//        AtomicBoolean result = new AtomicBoolean(false);
-//        service.execute(() -> {
-//            try {
-//                this.sheetService.spreadsheets().values().update(spreadSheetId, currentSheetTitle + "!A" + valueRange.getRange().split(":")[0].split("A")[1] + ":F" + valueRange.getRange().split(":")[0].split("A")[1], valueRange)
-//                        .setValueInputOption("RAW")
-//                        .execute();
-//                result.set(true);
-//            } catch (IOException ioException) {
-//                result.set(false);
-//            }
-//            new Handler(Looper.getMainLooper()).post(() -> tcs.setResult(result.get()));
-//        });
-//        return tcs.getTask();
-//    }
+    public Task<Boolean> updateSpecificRow(int row,ValueRange valueRange) {
+        TaskCompletionSource<Boolean> tcs = new TaskCompletionSource<>();
+        ExecutorService service = Executors.newFixedThreadPool(1);
+        AtomicBoolean result = new AtomicBoolean(false);
+        service.execute(() -> {
+            try {
+                sheets.spreadsheets().values().update(spreadSheetId, currentSheetTitle + "!A"+row+":M"+row, valueRange)
+                        .setValueInputOption("USER_ENTERED")
+                        .execute();
+                result.set(true);
+            } catch (IOException ioException) {
+                result.set(false);
+                ioException.printStackTrace();
+            }
+            new Handler(Looper.getMainLooper()).post(() -> tcs.setResult(result.get()));
+        });
+        return tcs.getTask();
+    }
 
     public void updateSheetService() {
         sheets = getSheetService(context);

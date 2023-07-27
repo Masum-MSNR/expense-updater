@@ -96,6 +96,7 @@
                         android:layout_marginEnd="5dp"
                         android:layout_weight="5"
                         android:background="@drawable/rounded_bg"
+                        android:inputType="numberDecimal"
                         android:paddingHorizontal="10dp"
                         android:paddingVertical="5dp"
                         android:textSize="16sp" />
@@ -115,6 +116,7 @@
                             android:layout_toStartOf="@id/cb_share_1"
                             android:background="@drawable/rounded_bg"
                             android:hint="@string/share"
+                            android:inputType="numberDecimal"
                             android:paddingHorizontal="10dp"
                             android:paddingVertical="5dp"
                             android:textSize="16sp" />
@@ -144,6 +146,7 @@
                         android:layout_marginEnd="5dp"
                         android:layout_weight="5"
                         android:background="@drawable/rounded_bg"
+                        android:inputType="numberDecimal"
                         android:paddingHorizontal="10dp"
                         android:paddingVertical="5dp"
                         android:textSize="16sp" />
@@ -163,6 +166,7 @@
                             android:layout_toStartOf="@id/cb_share_2"
                             android:background="@drawable/rounded_bg"
                             android:hint="@string/share"
+                            android:inputType="numberDecimal"
                             android:paddingHorizontal="10dp"
                             android:paddingVertical="5dp"
                             android:textSize="16sp" />
@@ -192,6 +196,7 @@
                         android:layout_marginEnd="5dp"
                         android:layout_weight="5"
                         android:background="@drawable/rounded_bg"
+                        android:inputType="numberDecimal"
                         android:paddingHorizontal="10dp"
                         android:paddingVertical="5dp"
                         android:textSize="16sp" />
@@ -211,6 +216,7 @@
                             android:layout_toStartOf="@id/cb_share_3"
                             android:background="@drawable/rounded_bg"
                             android:hint="@string/share"
+                            android:inputType="numberDecimal"
                             android:paddingHorizontal="10dp"
                             android:paddingVertical="5dp"
                             android:textSize="16sp" />
@@ -240,6 +246,7 @@
                         android:layout_marginEnd="5dp"
                         android:layout_weight="5"
                         android:background="@drawable/rounded_bg"
+                        android:inputType="numberDecimal"
                         android:paddingHorizontal="10dp"
                         android:paddingVertical="5dp"
                         android:textSize="16sp" />
@@ -259,6 +266,7 @@
                             android:layout_toStartOf="@id/cb_share_4"
                             android:background="@drawable/rounded_bg"
                             android:hint="@string/share"
+                            android:inputType="numberDecimal"
                             android:paddingHorizontal="10dp"
                             android:paddingVertical="5dp"
                             android:textSize="16sp" />
@@ -272,8 +280,23 @@
                             android:minWidth="10dp"
                             android:minHeight="10dp" />
                     </RelativeLayout>
+
+
                 </LinearLayout>
 
+                <TextView
+                    android:id="@+id/btn_add_expense"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/ripple_button"
+                    android:backgroundTint="@color/green"
+                    android:gravity="center"
+                    android:paddingVertical="5dp"
+                    android:text="@string/add_expense"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
             </LinearLayout>
         </LinearLayout>
 

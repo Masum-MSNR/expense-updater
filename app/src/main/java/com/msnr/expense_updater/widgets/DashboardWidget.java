@@ -7,7 +7,7 @@ import android.util.Log;
 import android.widget.RemoteViews;
 
 import com.msnr.expense_updater.R;
-import com.msnr.expense_updater.serviceHelpers.SheetHelper;
+import com.msnr.expense_updater.helpers.SheetHelper;
 import com.msnr.expense_updater.utils.Methods;
 
 import java.util.List;

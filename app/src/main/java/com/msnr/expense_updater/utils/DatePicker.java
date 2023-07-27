@@ -30,7 +30,7 @@ public class DatePicker {
             _Year = year;
             _month = monthOfYear + 1;
             _day = dayOfMonth;
-            editText.setText(new StringBuilder().append(_day).append("/").append(_month).append("/").append(_Year));
+            editText.setText(new StringBuilder().append(_month).append("/").append(_day).append("/").append(_Year));
         };
         datePickerDialog = new DatePickerDialog(context, R.style.customDatePickerDialogTheme, dateListener, myCalendar
                 .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),

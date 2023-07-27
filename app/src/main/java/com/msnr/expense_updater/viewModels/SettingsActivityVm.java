@@ -15,13 +15,11 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.Scope;
 import com.google.api.services.sheets.v4.SheetsScopes;
-import com.msnr.expense_updater.activities.SettingsActivity;
-import com.msnr.expense_updater.serviceHelpers.SheetHelper;
+import com.msnr.expense_updater.helpers.SheetHelper;
 import com.msnr.expense_updater.utils.Methods;
 import com.msnr.expense_updater.utils.Preference;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class SettingsActivityVm extends AndroidViewModel {
 
