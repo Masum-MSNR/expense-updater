@@ -184,23 +184,23 @@ public class SheetHelper {
         return tcs.getTask();
     }
 
-    public Task<Boolean> appendWithSheet(ValueRange valueRange) {
-        TaskCompletionSource<Boolean> tcs = new TaskCompletionSource<>();
-        ExecutorService service = Executors.newFixedThreadPool(1);
-        AtomicBoolean result = new AtomicBoolean(false);
-        service.execute(() -> {
-            try {
-                sheets.spreadsheets().values().append(spreadSheetId, currentSheetTitle + "!A:F", valueRange)
-                        .setValueInputOption("RAW")
-                        .execute();
-                result.set(true);
-            } catch (IOException ioException) {
-                result.set(false);
-            }
-            new Handler(Looper.getMainLooper()).post(() -> tcs.setResult(result.get()));
-        });
-        return tcs.getTask();
-    }
+//    public Task<Boolean> appendWithSheet(ValueRange valueRange) {
+//        TaskCompletionSource<Boolean> tcs = new TaskCompletionSource<>();
+//        ExecutorService service = Executors.newFixedThreadPool(1);
+//        AtomicBoolean result = new AtomicBoolean(false);
+//        service.execute(() -> {
+//            try {
+//                sheets.spreadsheets().values().append(spreadSheetId, currentSheetTitle + "!A:F", valueRange)
+//                        .setValueInputOption("RAW")
+//                        .execute();
+//                result.set(true);
+//            } catch (IOException ioException) {
+//                result.set(false);
+//            }
+//            new Handler(Looper.getMainLooper()).post(() -> tcs.setResult(result.get()));
+//        });
+//        return tcs.getTask();
+//    }
 
     public Task<Boolean> updateSpecificRow(int row,ValueRange valueRange) {
         TaskCompletionSource<Boolean> tcs = new TaskCompletionSource<>();

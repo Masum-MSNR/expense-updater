@@ -23,6 +23,7 @@ import com.msnr.expense_updater.R;
 import com.msnr.expense_updater.databinding.DialogEntryAreaBinding;
 import com.msnr.expense_updater.helpers.SheetHelper;
 import com.msnr.expense_updater.utils.DatePicker;
+import com.msnr.expense_updater.utils.Methods;
 import com.msnr.expense_updater.utils.Preference;
 
 import java.util.ArrayList;
@@ -47,10 +48,15 @@ public class EnterExpenseDialog extends AppCompatDialogFragment {
 
         List<String> names = Preference.getNames(requireActivity());
 
-        binding.etPaid1.setHint(names.get(0));
-        binding.etPaid2.setHint(names.get(1));
-        binding.etPaid3.setHint(names.get(2));
-        binding.etPaid4.setHint(names.get(3));
+        binding.etPaid1.setHint(names.get(0) + "-P");
+        binding.etPaid2.setHint(names.get(1) + "-P");
+        binding.etPaid3.setHint(names.get(2) + "-P");
+        binding.etPaid4.setHint(names.get(3) + "-P");
+
+        binding.etShare1.setHint(names.get(0) + "-S");
+        binding.etShare2.setHint(names.get(1) + "-S");
+        binding.etShare3.setHint(names.get(2) + "-S");
+        binding.etShare4.setHint(names.get(3) + "-S");
 
 
         binding.etDate.setOnClickListener(v -> datePicker.showDialog());
@@ -59,8 +65,8 @@ public class EnterExpenseDialog extends AppCompatDialogFragment {
         textChangeListener(binding.etItemDescription);
 
         //init spinner adapter
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(requireActivity(), android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.categories));
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(requireActivity(), R.layout.spinner_item, getResources().getStringArray(R.array.categories));
+        adapter.setDropDownViewResource(R.layout.dropdown_view_resource);
         binding.spCategory.setAdapter(adapter);
 
         binding.spCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -105,8 +111,13 @@ public class EnterExpenseDialog extends AppCompatDialogFragment {
             binding.etShare4.setText(isChecked ? "1" : "");
         });
 
+        binding.ibtClose.setOnClickListener(v -> dismiss());
+
         binding.btnAddExpense.setOnClickListener(v -> {
             if (!formValidator()) return;
+            disableAll();
+            binding.progressBar.setVisibility(View.VISIBLE);
+            binding.btnAddExpense.setVisibility(View.GONE);
 
             String date = binding.etDate.getText().toString();
             String itemDescription = binding.etItemDescription.getText().toString();
@@ -125,7 +136,7 @@ public class EnterExpenseDialog extends AppCompatDialogFragment {
             String share3 = binding.etShare3.getText().toString();
             String share4 = binding.etShare4.getText().toString();
 
-            String finalShare1  = share1.isEmpty() ? "0" : share1;
+            String finalShare1 = share1.isEmpty() ? "0" : share1;
             String finalShare2 = share2.isEmpty() ? "0" : share2;
             String finalShare3 = share3.isEmpty() ? "0" : share3;
             String finalShare4 = share4.isEmpty() ? "0" : share4;
@@ -136,9 +147,16 @@ public class EnterExpenseDialog extends AppCompatDialogFragment {
             sheetHelper.loadLastEmptyIndex().addOnSuccessListener(result -> {
                 ValueRange valueRange = new ValueRange().setValues(Collections.singletonList(
                         Arrays.asList(date, selectedCategory, itemDescription, "=SUM(E" + result + ":H" + result + ")", finalPaid1, finalPaid2, finalPaid3, finalPaid4, "", finalShare1, finalShare2, finalShare3, finalShare4)));
-                sheetHelper.updateSpecificRow(result, valueRange).addOnSuccessListener(res->{
-                    Toast.makeText(requireActivity(), "Expense Added", Toast.LENGTH_SHORT).show();
-                    dismiss();
+                sheetHelper.updateSpecificRow(result, valueRange).addOnSuccessListener(res -> {
+                    if (res) {
+                        Toast.makeText(requireActivity(), "Expense Added", Toast.LENGTH_SHORT).show();
+                        Methods.updateWidget(requireActivity());
+                        dismiss();
+                    } else {
+                        binding.progressBar.setVisibility(View.GONE);
+                        binding.btnAddExpense.setVisibility(View.VISIBLE);
+                        enableAll();
+                    }
                 });
             });
 
@@ -217,6 +235,22 @@ public class EnterExpenseDialog extends AppCompatDialogFragment {
                 binding.etPaid2.setError(null);
                 binding.etPaid3.setError(null);
                 binding.etPaid4.setError(null);
+
+                double total = 0;
+                if (!binding.etPaid1.getText().toString().isEmpty()) {
+                    total += Double.parseDouble(binding.etPaid1.getText().toString());
+                }
+                if (!binding.etPaid2.getText().toString().isEmpty()) {
+                    total += Double.parseDouble(binding.etPaid2.getText().toString());
+                }
+                if (!binding.etPaid3.getText().toString().isEmpty()) {
+                    total += Double.parseDouble(binding.etPaid3.getText().toString());
+                }
+                if (!binding.etPaid4.getText().toString().isEmpty()) {
+                    total += Double.parseDouble(binding.etPaid4.getText().toString());
+                }
+
+                binding.tvPaidTotal.setText(String.valueOf(total));
             }
 
             @Override
@@ -238,6 +272,22 @@ public class EnterExpenseDialog extends AppCompatDialogFragment {
                 binding.etShare2.setError(null);
                 binding.etShare3.setError(null);
                 binding.etShare4.setError(null);
+
+                double total = 0;
+                if (!binding.etShare1.getText().toString().isEmpty()) {
+                    total += Double.parseDouble(binding.etShare1.getText().toString());
+                }
+                if (!binding.etShare2.getText().toString().isEmpty()) {
+                    total += Double.parseDouble(binding.etShare2.getText().toString());
+                }
+                if (!binding.etShare3.getText().toString().isEmpty()) {
+                    total += Double.parseDouble(binding.etShare3.getText().toString());
+                }
+                if (!binding.etShare4.getText().toString().isEmpty()) {
+                    total += Double.parseDouble(binding.etShare4.getText().toString());
+                }
+
+                binding.tvShareTotal.setText(String.valueOf(total));
             }
 
             @Override
@@ -245,5 +295,49 @@ public class EnterExpenseDialog extends AppCompatDialogFragment {
 
             }
         });
+    }
+
+    private void disableAll() {
+        binding.ibtClose.setEnabled(false);
+        binding.etDate.setEnabled(false);
+        binding.spCategory.setEnabled(false);
+        binding.etItemDescription.setEnabled(false);
+
+        binding.etPaid1.setEnabled(false);
+        binding.etPaid2.setEnabled(false);
+        binding.etPaid3.setEnabled(false);
+        binding.etPaid4.setEnabled(false);
+
+        binding.etShare1.setEnabled(false);
+        binding.etShare2.setEnabled(false);
+        binding.etShare3.setEnabled(false);
+        binding.etShare4.setEnabled(false);
+
+        binding.cbShare1.setEnabled(false);
+        binding.cbShare2.setEnabled(false);
+        binding.cbShare3.setEnabled(false);
+        binding.cbShare4.setEnabled(false);
+    }
+
+    private void enableAll() {
+        binding.ibtClose.setEnabled(true);
+        binding.etDate.setEnabled(true);
+        binding.spCategory.setEnabled(true);
+        binding.etItemDescription.setEnabled(true);
+
+        binding.etPaid1.setEnabled(true);
+        binding.etPaid2.setEnabled(true);
+        binding.etPaid3.setEnabled(true);
+        binding.etPaid4.setEnabled(true);
+
+        binding.cbShare1.setEnabled(true);
+        binding.cbShare2.setEnabled(true);
+        binding.cbShare3.setEnabled(true);
+        binding.cbShare4.setEnabled(true);
+
+        binding.etShare1.setEnabled(!binding.cbShare1.isChecked());
+        binding.etShare2.setEnabled(!binding.cbShare2.isChecked());
+        binding.etShare3.setEnabled(!binding.cbShare3.isChecked());
+        binding.etShare4.setEnabled(!binding.cbShare4.isChecked());
     }
 }

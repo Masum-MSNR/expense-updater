@@ -27,6 +27,7 @@
     <string name="enter_expense">Enter Expense</string>
     <string name="add_expense">Add Expense</string>
     <string name="share">Share</string>
+    <string name="_0_0">0.0</string>
 
 
     <string-array name="categories">

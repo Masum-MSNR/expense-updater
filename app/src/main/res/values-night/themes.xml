@@ -15,4 +15,8 @@
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="Theme.ProgressBar" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorAccent">@color/green</item>
+    </style>
 </resources>

@@ -14,25 +14,19 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.api.services.sheets.v4.model.CellData;
-import com.google.api.services.sheets.v4.model.ExtendedValue;
-import com.google.api.services.sheets.v4.model.ValueRange;
 import com.msnr.expense_updater.R;
 import com.msnr.expense_updater.adapters.SheetTitleAdapter;
-import com.msnr.expense_updater.databinding.ActivitySettingsBinding;
+import com.msnr.expense_updater.databinding.ActivityMainBinding;
 import com.msnr.expense_updater.dialogs.EnterExpenseDialog;
-import com.msnr.expense_updater.helpers.SheetHelper;
 import com.msnr.expense_updater.utils.Methods;
 import com.msnr.expense_updater.viewModels.SettingsActivityVm;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.Objects;
 
-public class SettingsActivity extends AppCompatActivity implements SheetTitleAdapter.OnClick {
+public class MainActivity extends AppCompatActivity implements SheetTitleAdapter.OnClick {
 
-    private ActivitySettingsBinding binding;
+    private ActivityMainBinding binding;
     private SettingsActivityVm viewModel;
     private ActivityResultLauncher<Intent> launcher;
     private SheetTitleAdapter adapter;
@@ -97,7 +91,7 @@ public class SettingsActivity extends AppCompatActivity implements SheetTitleAda
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivitySettingsBinding.inflate(getLayoutInflater());
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         handler = new Handler();
@@ -174,18 +168,10 @@ public class SettingsActivity extends AppCompatActivity implements SheetTitleAda
 
         binding.btnAddExpense.setOnClickListener(v -> {
             EnterExpenseDialog dialog = new EnterExpenseDialog();
+            dialog.setCancelable(false);
             dialog.show(getSupportFragmentManager(), "Enter Expense");
         });
     }
-
-    private CellData getCellDataWithFormula(String formula) {
-        CellData cellData = new CellData();
-        ExtendedValue extendedValue = new ExtendedValue();
-        extendedValue.setFormulaValue(formula);
-        cellData.setUserEnteredValue(extendedValue);
-        return cellData;
-    }
-
 
     @Override
     public void onClick(String title) {

@@ -5,19 +5,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
+    android:background="@color/white"
     android:orientation="vertical"
-    tools:context=".activities.SettingsActivity">
+    tools:context=".activities.MainActivity">
 
 
     <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:layout_marginHorizontal="10dp"
+        android:layout_marginHorizontal="16dp"
         android:layout_marginTop="5dp"
         android:background="@drawable/bg_toolbar"
         android:elevation="2dp"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        app:title="Settings" />
+        app:title="Expense Updater"
+        app:titleTextColor="@color/black" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -40,7 +42,7 @@
                     android:id="@+id/connect_with_google_ll"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginHorizontal="16dp"
                     android:layout_marginTop="5dp"
                     android:orientation="horizontal">
 
@@ -75,6 +77,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginTop="10dp"
+                        app:cardBackgroundColor="@color/white"
                         app:cardCornerRadius="50dp">
 
                         <LinearLayout
@@ -82,7 +85,7 @@
                             android:layout_height="wrap_content"
                             android:gravity="center_vertical"
                             android:orientation="horizontal"
-                            android:paddingHorizontal="20dp"
+                            android:paddingHorizontal="16dp"
                             android:paddingVertical="10dp">
 
                             <ImageView
@@ -146,7 +149,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
-                android:layout_marginHorizontal="20dp"
+                android:layout_marginHorizontal="16dp"
                 android:layout_marginVertical="5dp"
                 android:drawableLeft="@drawable/ic_google"
                 android:text="@string/connect" />
@@ -162,8 +165,8 @@
                     android:id="@+id/connect_with_spread_sheet_ll"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="10dp"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="16dp"
                     android:orientation="horizontal">
 
                     <View
@@ -199,6 +202,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginTop="10dp"
+                        app:cardBackgroundColor="@color/white"
                         app:cardCornerRadius="50dp">
 
                         <LinearLayout
@@ -206,7 +210,7 @@
                             android:layout_height="wrap_content"
                             android:gravity="center_vertical"
                             android:orientation="horizontal"
-                            android:paddingHorizontal="20dp"
+                            android:paddingHorizontal="16dp"
                             android:paddingVertical="10dp">
 
                             <ImageView
@@ -274,7 +278,7 @@
                             android:id="@+id/disconnect_bt"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginHorizontal="10dp"
+                            android:layout_marginHorizontal="16dp"
                             android:layout_marginVertical="5dp"
                             android:layout_weight="1"
                             android:background="@drawable/ripple_button"
@@ -289,7 +293,7 @@
                             android:id="@+id/change_sheet_bt"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginHorizontal="10dp"
+                            android:layout_marginHorizontal="16dp"
                             android:layout_marginVertical="5dp"
                             android:layout_weight="1"
                             android:background="@drawable/ripple_button"
@@ -323,9 +327,11 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="10dp"
+                android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="10dp"
-                android:enabled="false">
+                android:enabled="false"
+                app:boxStrokeColor="@color/black"
+                app:hintTextColor="@color/gray">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/spread_sheet_id_et"
@@ -333,7 +339,10 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/spreadsheet_id"
                     android:inputType="text"
-                    android:text="" />
+                    android:text=""
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/gray"
+                    app:boxStrokeColor="@color/black" />
             </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -343,7 +352,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
-                android:layout_marginHorizontal="20dp"
+                android:layout_marginHorizontal="16dp"
                 android:layout_marginVertical="5dp"
                 android:drawableLeft="@drawable/ic_spread_sheet"
                 android:text="@string/connect" />
@@ -357,7 +366,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginHorizontal="16dp"
                     android:layout_marginTop="10dp"
                     android:orientation="horizontal">
 
@@ -383,7 +392,7 @@
                     android:id="@+id/btn_add_expense"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
+                    android:layout_margin="16dp"
                     android:background="@drawable/ripple_button"
                     android:backgroundTint="@color/green"
                     android:gravity="center"
