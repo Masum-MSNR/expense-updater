@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.text.Html;
 import android.text.Spanned;
 import android.util.Log;
+import android.view.View;
 
 import com.msnr.expense_updater.receiver.TaskReceiver;
 import com.msnr.expense_updater.widgets.DashboardWidget;
@@ -62,5 +63,9 @@ public class Methods {
         } else {
             return Html.fromHtml("<font color='#000000'>" + temp + "</font>");
         }
+    }
+
+    public static void hideView(View view) {
+        view.setVisibility(View.GONE);
     }
 }
