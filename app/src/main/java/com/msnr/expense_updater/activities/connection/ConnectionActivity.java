@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.msnr.expense_updater.R;
 import com.msnr.expense_updater.adapters.SheetTitleAdapter;
+import com.msnr.expense_updater.databinding.ActivityConnectionBinding;
 import com.msnr.expense_updater.databinding.ActivityMainBinding;
 import com.msnr.expense_updater.dialogs.EnterExpenseDialog;
 import com.msnr.expense_updater.utils.Methods;
@@ -22,12 +23,12 @@ import com.msnr.expense_updater.utils.Methods;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class ConnectionActivity extends AppCompatActivity  implements SheetTitleAdapter.OnClick {
+public class ConnectionActivity extends AppCompatActivity implements SheetTitleAdapter.OnClick {
 
-    private ActivityMainBinding binding;
+    private ActivityConnectionBinding binding;
     private ConnectionViewModel viewModel;
 
-    private ActivityResultLauncher<Intent> launcher = registerForActivityResult(
+    private final ActivityResultLauncher<Intent> launcher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> viewModel.handleSignInResult(result.getData())
     );
@@ -42,45 +43,61 @@ public class ConnectionActivity extends AppCompatActivity  implements SheetTitle
         binding.changeSheetBt.setText(R.string.change_sheet);
     };
 
-    private final Observer<Integer> stateObserver = integer -> {
-        switch (integer) {
-            case 1:
-                binding.connectWithGoogleLl.setVisibility(View.VISIBLE);
-                binding.connectWithSpreadSheetLl.setVisibility(View.VISIBLE);
-                binding.connectWithGoogleBt.setVisibility(View.VISIBLE);
-                binding.connectWithSpreadSheetBt.setVisibility(View.VISIBLE);
-                binding.connectWithSpreadSheetBt.setEnabled(false);
-                binding.spreadSheetIdIl.setVisibility(View.VISIBLE);
-                binding.spreadSheetIdIl.setEnabled(false);
-                binding.connectedToGoogleLl.setVisibility(View.GONE);
-                binding.connectedToSpreadSheetLl.setVisibility(View.GONE);
-                binding.detailsLl.setVisibility(View.GONE);
-                break;
-            case 2:
-                binding.connectWithGoogleLl.setVisibility(View.GONE);
-                binding.connectWithSpreadSheetLl.setVisibility(View.VISIBLE);
-                binding.connectWithGoogleBt.setVisibility(View.GONE);
-                binding.connectWithSpreadSheetBt.setVisibility(View.VISIBLE);
-                binding.connectWithSpreadSheetBt.setEnabled(true);
-                binding.spreadSheetIdIl.setVisibility(View.VISIBLE);
-                binding.spreadSheetIdIl.setEnabled(true);
-                binding.connectedToGoogleLl.setVisibility(View.VISIBLE);
-                binding.connectedToSpreadSheetLl.setVisibility(View.GONE);
-                binding.detailsLl.setVisibility(View.GONE);
-                break;
-            case 3:
-                binding.connectWithGoogleLl.setVisibility(View.GONE);
-                binding.connectWithSpreadSheetLl.setVisibility(View.GONE);
-                binding.connectWithGoogleBt.setVisibility(View.GONE);
-                binding.connectWithSpreadSheetBt.setVisibility(View.GONE);
-                binding.spreadSheetIdIl.setVisibility(View.GONE);
-                binding.connectedToGoogleLl.setVisibility(View.VISIBLE);
-                binding.connectedToSpreadSheetLl.setVisibility(View.VISIBLE);
-                String d4 = "Connected to " + viewModel.getSheetHelper().getSpreadSheetTitle() + " [" + viewModel.getSheetHelper().getCurrentSheetTitle() + "]";
-                binding.dt4.setText(d4);
-                binding.detailsLl.setVisibility(View.VISIBLE);
-                break;
+    private final Observer<Integer> stateObserver = state -> {
+        binding.connectWithGoogleLl.setVisibility(state == 1 ? View.VISIBLE : View.GONE);
+        binding.connectWithSpreadSheetLl.setVisibility(state == 1 || state == 2 ? View.VISIBLE : View.GONE);
+        binding.connectWithGoogleBt.setVisibility(state == 1 ? View.VISIBLE : View.GONE);
+        binding.connectWithSpreadSheetBt.setVisibility(state == 1 || state == 2 ? View.VISIBLE : View.GONE);
+        binding.connectWithSpreadSheetBt.setEnabled(state == 2);
+        binding.spreadSheetIdIl.setVisibility(state == 1 || state == 2 ? View.VISIBLE : View.GONE);
+        binding.spreadSheetIdIl.setEnabled(state == 2);
+        binding.connectedToGoogleLl.setVisibility(state == 2 || state == 3 ? View.VISIBLE : View.GONE);
+        binding.connectedToSpreadSheetLl.setVisibility(state == 3 ? View.VISIBLE : View.GONE);
+        binding.detailsLl.setVisibility(state == 3 ? View.VISIBLE : View.GONE);
+
+        if (state == 3) {
+            String d4 = "Connected to " + viewModel.getSheetHelper().getSpreadSheetTitle() + " [" + viewModel.getSheetHelper().getCurrentSheetTitle() + "]";
+            binding.dt4.setText(d4);
         }
+
+//        switch (state) {
+//            case 1:
+//                binding.connectWithGoogleLl.setVisibility(View.VISIBLE);
+//                binding.connectWithSpreadSheetLl.setVisibility(View.VISIBLE);
+//                binding.connectWithGoogleBt.setVisibility(View.VISIBLE);
+//                binding.connectWithSpreadSheetBt.setVisibility(View.VISIBLE);
+//                binding.connectWithSpreadSheetBt.setEnabled(false);
+//                binding.spreadSheetIdIl.setVisibility(View.VISIBLE);
+//                binding.spreadSheetIdIl.setEnabled(false);
+//                binding.connectedToGoogleLl.setVisibility(View.GONE);
+//                binding.connectedToSpreadSheetLl.setVisibility(View.GONE);
+//                binding.detailsLl.setVisibility(View.GONE);
+//                break;
+//            case 2:
+//                binding.connectWithGoogleLl.setVisibility(View.GONE);
+//                binding.connectWithSpreadSheetLl.setVisibility(View.VISIBLE);
+//                binding.connectWithGoogleBt.setVisibility(View.GONE);
+//                binding.connectWithSpreadSheetBt.setVisibility(View.VISIBLE);
+//                binding.connectWithSpreadSheetBt.setEnabled(true);
+//                binding.spreadSheetIdIl.setVisibility(View.VISIBLE);
+//                binding.spreadSheetIdIl.setEnabled(true);
+//                binding.connectedToGoogleLl.setVisibility(View.VISIBLE);
+//                binding.connectedToSpreadSheetLl.setVisibility(View.GONE);
+//                binding.detailsLl.setVisibility(View.GONE);
+//                break;
+//            case 3:
+//                binding.connectWithGoogleLl.setVisibility(View.GONE);
+//                binding.connectWithSpreadSheetLl.setVisibility(View.GONE);
+//                binding.connectWithGoogleBt.setVisibility(View.GONE);
+//                binding.connectWithSpreadSheetBt.setVisibility(View.GONE);
+//                binding.spreadSheetIdIl.setVisibility(View.GONE);
+//                binding.connectedToGoogleLl.setVisibility(View.VISIBLE);
+//                binding.connectedToSpreadSheetLl.setVisibility(View.VISIBLE);
+//                String d4 = "Connected to " + viewModel.getSheetHelper().getSpreadSheetTitle() + " [" + viewModel.getSheetHelper().getCurrentSheetTitle() + "]";
+//                binding.dt4.setText(d4);
+//                binding.detailsLl.setVisibility(View.VISIBLE);
+//                break;
+//        }
     };
 
 
@@ -96,7 +113,7 @@ public class ConnectionActivity extends AppCompatActivity  implements SheetTitle
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        binding = ActivityConnectionBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         viewModel = new ViewModelProvider(this).get(ConnectionViewModel.class);
@@ -108,7 +125,6 @@ public class ConnectionActivity extends AppCompatActivity  implements SheetTitle
         binding.sheetTitleRv.setLayoutManager(new GridLayoutManager(this, 2));
         binding.sheetTitleRv.setAdapter(adapter);
 
-        //observer
         viewModel.getState().observe(this, stateObserver);
         viewModel.getSheetTitles().observe(this, titlesObserver);
 
@@ -161,11 +177,6 @@ public class ConnectionActivity extends AppCompatActivity  implements SheetTitle
             viewModel.disconnectSheet();
         });
 
-        binding.btnAddExpense.setOnClickListener(v -> {
-            EnterExpenseDialog dialog = new EnterExpenseDialog();
-            dialog.setCancelable(false);
-            dialog.show(getSupportFragmentManager(), "Enter Expense");
-        });
     }
 
     @Override

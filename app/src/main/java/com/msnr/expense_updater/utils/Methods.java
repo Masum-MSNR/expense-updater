@@ -68,4 +68,8 @@ public class Methods {
     public static void hideView(View view) {
         view.setVisibility(View.GONE);
     }
+
+    public static void showView(View view) {
+        view.setVisibility(View.VISIBLE);
+    }
 }
