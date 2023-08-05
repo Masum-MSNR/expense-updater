@@ -23,8 +23,8 @@ public class MainActivity extends AppCompatActivity {
 
     private final Observer<Integer> stateObserver = state -> {
         binding.connectLl.setVisibility(state == 3 ? View.GONE : View.VISIBLE);
-        binding.btnSetUp.setVisibility(state == 3 ? View.GONE : View.VISIBLE);
         binding.btnAddExpense.setVisibility(state == 3 ? View.VISIBLE : View.GONE);
+        binding.rvPerUserExpenses.setVisibility(state == 3 ? View.VISIBLE : View.GONE);
     };
 
 
