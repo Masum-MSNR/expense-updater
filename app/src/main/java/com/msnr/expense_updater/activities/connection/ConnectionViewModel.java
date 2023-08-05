@@ -14,6 +14,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.Scope;
 import com.google.api.services.sheets.v4.SheetsScopes;
 import com.msnr.expense_updater.helpers.SheetHelper;
+import com.msnr.expense_updater.repo.StateRepo;
 import com.msnr.expense_updater.utils.Methods;
 import com.msnr.expense_updater.utils.Preference;
 
@@ -22,7 +23,7 @@ import java.util.ArrayList;
 public class ConnectionViewModel extends AndroidViewModel {
 
     private SheetHelper sheetHelper;
-    private MutableLiveData<Integer> state;
+    private StateRepo stateRepo;
 
     public ConnectionViewModel(@NonNull Application application) {
         super(application);
@@ -30,14 +31,14 @@ public class ConnectionViewModel extends AndroidViewModel {
     }
 
     private void init(Context context) {
-        state = new MutableLiveData<>();
+        stateRepo = StateRepo.getInstance();
         sheetHelper = new SheetHelper(context);
 
-        state.setValue(1);
+        stateRepo.setState(1);
         if (GoogleSignIn.getLastSignedInAccount(context) != null) {
-            state.setValue(2);
+            stateRepo.setState(2);
             if (!sheetHelper.getSpreadSheetId().equals("")) {
-                state.setValue(3);
+                stateRepo.setState(3);
             }
         }
     }
@@ -51,17 +52,17 @@ public class ConnectionViewModel extends AndroidViewModel {
 
     public void handleSignInResult(Intent result) {
         GoogleSignIn.getSignedInAccountFromIntent(result).addOnSuccessListener(googleAccount -> {
-            state.setValue(2);
+            stateRepo.setState(2);
             sheetHelper.updateSheetService();
         }).addOnFailureListener(exception -> {
-            state.setValue(1);
+            stateRepo.setState(1);
         });
     }
 
     public void connectSheet(String sheetId) {
         sheetHelper.loadSpreadSheet(sheetId).addOnSuccessListener(aBoolean -> {
             if (aBoolean) {
-                state.setValue(3);
+                stateRepo.setState(3);
                 Methods.setAlarm(getApplication().getApplicationContext());
                 sheetHelper.getSpecificRange("E1:H1", new int[]{0}).addOnSuccessListener(result -> {
                     Preference.setNames(result.get(0), getApplication().getApplicationContext());
@@ -72,7 +73,7 @@ public class ConnectionViewModel extends AndroidViewModel {
 
     public void disconnectSheet() {
         sheetHelper.disconnect();
-        state.setValue(2);
+        stateRepo.setState(2);
         Methods.cancelAlarm(getApplication().getApplicationContext());
     }
 
@@ -82,7 +83,7 @@ public class ConnectionViewModel extends AndroidViewModel {
     }
 
     public MutableLiveData<Integer> getState() {
-        return state;
+        return stateRepo.getState();
     }
 
     public MutableLiveData<ArrayList<String>> getSheetTitles() {

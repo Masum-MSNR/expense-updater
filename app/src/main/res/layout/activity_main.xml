@@ -11,8 +11,10 @@
 
 
     <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
+        android:background="@color/white"
         android:elevation="2dp"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:title="Expense Updater"
@@ -29,6 +31,46 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <LinearLayout
+                android:id="@+id/connect_ll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal">
+
+                <View
+                    android:layout_width="5dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="@color/gray" />
+
+                <TextView
+                    android:id="@+id/dt1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center|start"
+                    android:paddingHorizontal="8dp"
+                    android:paddingVertical="5dp"
+                    android:text="@string/d_main"
+                    android:textColor="@color/light_black" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/btn_set_up"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:background="@drawable/ripple_button"
+                android:backgroundTint="@color/green"
+                android:gravity="center"
+                android:paddingVertical="5dp"
+                android:text="@string/set_up"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/btn_add_expense"

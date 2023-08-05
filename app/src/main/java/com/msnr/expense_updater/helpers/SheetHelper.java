@@ -19,20 +19,14 @@ import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.services.sheets.v4.Sheets;
 import com.google.api.services.sheets.v4.SheetsScopes;
-
-import com.google.api.services.sheets.v4.model.GridCoordinate;
-import com.google.api.services.sheets.v4.model.Request;
-import com.google.api.services.sheets.v4.model.RowData;
 import com.google.api.services.sheets.v4.model.Sheet;
 import com.google.api.services.sheets.v4.model.Spreadsheet;
-import com.google.api.services.sheets.v4.model.UpdateCellsRequest;
 import com.google.api.services.sheets.v4.model.ValueRange;
 import com.msnr.expense_updater.R;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -202,13 +196,13 @@ public class SheetHelper {
 //        return tcs.getTask();
 //    }
 
-    public Task<Boolean> updateSpecificRow(int row,ValueRange valueRange) {
+    public Task<Boolean> updateSpecificRow(int row, ValueRange valueRange) {
         TaskCompletionSource<Boolean> tcs = new TaskCompletionSource<>();
         ExecutorService service = Executors.newFixedThreadPool(1);
         AtomicBoolean result = new AtomicBoolean(false);
         service.execute(() -> {
             try {
-                sheets.spreadsheets().values().update(spreadSheetId, currentSheetTitle + "!A"+row+":M"+row, valueRange)
+                sheets.spreadsheets().values().update(spreadSheetId, currentSheetTitle + "!A" + row + ":M" + row, valueRange)
                         .setValueInputOption("USER_ENTERED")
                         .execute();
                 result.set(true);

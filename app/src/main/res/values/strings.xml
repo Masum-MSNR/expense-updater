@@ -28,6 +28,8 @@
     <string name="add_expense">Add Expense</string>
     <string name="share">Share</string>
     <string name="_0_0">0.0</string>
+    <string name="d_main">Please complete setup first. Connect google account and a sheet.</string>
+    <string name="set_up">Set Up</string>
 
 
     <string-array name="categories">

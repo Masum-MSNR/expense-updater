@@ -38,7 +38,7 @@ android {
         viewBinding true
     }
     configurations {
-        all {
+        configureEach {
             exclude group: 'commons-logging', module: 'commons-logging'
             exclude group: 'org.apache.httpcomponents'
         }

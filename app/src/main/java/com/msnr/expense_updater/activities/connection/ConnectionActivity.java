@@ -4,10 +4,12 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.MenuItem;
 import android.view.View;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -59,45 +61,6 @@ public class ConnectionActivity extends AppCompatActivity implements SheetTitleA
             String d4 = "Connected to " + viewModel.getSheetHelper().getSpreadSheetTitle() + " [" + viewModel.getSheetHelper().getCurrentSheetTitle() + "]";
             binding.dt4.setText(d4);
         }
-
-//        switch (state) {
-//            case 1:
-//                binding.connectWithGoogleLl.setVisibility(View.VISIBLE);
-//                binding.connectWithSpreadSheetLl.setVisibility(View.VISIBLE);
-//                binding.connectWithGoogleBt.setVisibility(View.VISIBLE);
-//                binding.connectWithSpreadSheetBt.setVisibility(View.VISIBLE);
-//                binding.connectWithSpreadSheetBt.setEnabled(false);
-//                binding.spreadSheetIdIl.setVisibility(View.VISIBLE);
-//                binding.spreadSheetIdIl.setEnabled(false);
-//                binding.connectedToGoogleLl.setVisibility(View.GONE);
-//                binding.connectedToSpreadSheetLl.setVisibility(View.GONE);
-//                binding.detailsLl.setVisibility(View.GONE);
-//                break;
-//            case 2:
-//                binding.connectWithGoogleLl.setVisibility(View.GONE);
-//                binding.connectWithSpreadSheetLl.setVisibility(View.VISIBLE);
-//                binding.connectWithGoogleBt.setVisibility(View.GONE);
-//                binding.connectWithSpreadSheetBt.setVisibility(View.VISIBLE);
-//                binding.connectWithSpreadSheetBt.setEnabled(true);
-//                binding.spreadSheetIdIl.setVisibility(View.VISIBLE);
-//                binding.spreadSheetIdIl.setEnabled(true);
-//                binding.connectedToGoogleLl.setVisibility(View.VISIBLE);
-//                binding.connectedToSpreadSheetLl.setVisibility(View.GONE);
-//                binding.detailsLl.setVisibility(View.GONE);
-//                break;
-//            case 3:
-//                binding.connectWithGoogleLl.setVisibility(View.GONE);
-//                binding.connectWithSpreadSheetLl.setVisibility(View.GONE);
-//                binding.connectWithGoogleBt.setVisibility(View.GONE);
-//                binding.connectWithSpreadSheetBt.setVisibility(View.GONE);
-//                binding.spreadSheetIdIl.setVisibility(View.GONE);
-//                binding.connectedToGoogleLl.setVisibility(View.VISIBLE);
-//                binding.connectedToSpreadSheetLl.setVisibility(View.VISIBLE);
-//                String d4 = "Connected to " + viewModel.getSheetHelper().getSpreadSheetTitle() + " [" + viewModel.getSheetHelper().getCurrentSheetTitle() + "]";
-//                binding.dt4.setText(d4);
-//                binding.detailsLl.setVisibility(View.VISIBLE);
-//                break;
-//        }
     };
 
 
@@ -117,6 +80,10 @@ public class ConnectionActivity extends AppCompatActivity implements SheetTitleA
         setContentView(binding.getRoot());
 
         viewModel = new ViewModelProvider(this).get(ConnectionViewModel.class);
+
+        setSupportActionBar(binding.toolbar);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         handler = new Handler();
 
@@ -190,5 +157,15 @@ public class ConnectionActivity extends AppCompatActivity implements SheetTitleA
         handler.removeCallbacks(runnable);
         binding.changeSheetBt.setText(R.string.change_sheet);
         Methods.setAlarm(this);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }else {
+            return super.onOptionsItemSelected(item);
+        }
     }
 }
