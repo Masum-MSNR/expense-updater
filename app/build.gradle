@@ -3,6 +3,7 @@ plugins {
 }
 
 android {
+    namespace 'com.msnr.expense_updater'
     compileSdk 33
 
     defaultConfig {
@@ -37,7 +38,7 @@ android {
         viewBinding true
     }
     configurations {
-        all {
+        configureEach {
             exclude group: 'commons-logging', module: 'commons-logging'
             exclude group: 'org.apache.httpcomponents'
         }

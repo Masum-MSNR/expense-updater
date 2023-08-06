@@ -15,7 +15,7 @@
     <string name="spreadsheet_id">Spreadsheet ID</string>
     <string name="d_permission">To continue you need to give permission to read your all upcoming message of your phone.</string>
     <string name="give_permission">Give Permission</string>
-    <string name="d_all_set">You are all set. You can update your sheet from here.</string>
+    <string name="d_all_set">You are all set.</string>
     <string name="change_sheet">Change Sheet</string>
     <string name="refresh">Refresh</string>
     <string name="appwidget_text">EXAMPLE</string>
@@ -28,6 +28,8 @@
     <string name="add_expense">Add Expense</string>
     <string name="share">Share</string>
     <string name="_0_0">0.0</string>
+    <string name="d_main">Please complete setup first. Connect google account and a sheet.</string>
+    <string name="set_up">Set Up</string>
 
 
     <string-array name="categories">
